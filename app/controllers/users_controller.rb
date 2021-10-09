@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  
+
   include UsersHelper
   include ApplicationHelper 
   helper ApplicationHelper
@@ -93,6 +93,14 @@ class UsersController < ApplicationController
     end
   end
 
+  def feed
+
+  end
+
+  def show_post_by_name
+  
+  end
+  
   # === end custom define ===
 
   private
@@ -107,6 +115,13 @@ class UsersController < ApplicationController
       end
     end
 
+    def is_same_acc
+      if (@user.id == nil || session[:user_id] == nil || session[:user_id] != @user.id)
+        return false;
+      else 
+        return true
+      end
+    end
 
 
     # ==== end custom define ====

@@ -7,4 +7,5 @@ class User < ApplicationRecord
 	validates :password_digest, length: {minimum: 1}
 
 	has_secure_password
+	
 end

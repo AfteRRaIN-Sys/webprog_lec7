@@ -6,4 +6,8 @@ Rails.application.routes.draw do
   get "/main", to: "users#login_page"
   post "/main", to: "users#login"
 
+  get "/register", to: "users#new"
+  get "/feed", to: "users#feed"
+  get "/profile/:username", to: "users#feed"
+
 end
