@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Owner:
+  = @post.user.name
+%p
+  %b Msg:
+  = @post.msg
+
+= link_to 'Edit', edit_post_path(@post)
+\|
+= link_to 'Back', posts_path
