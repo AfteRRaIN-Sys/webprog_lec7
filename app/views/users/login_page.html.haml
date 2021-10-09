@@ -1,0 +1,20 @@
+- flash.each do |type,msg|
+	-#%div{class: "#{flash_class(type)}" }
+	%div{class: "alert alert-danger"}
+		=msg
+
+=simple_form_for(User.new, as: :user, method: :post, url: :main) do |f|	#add your config here!!!!!!!
+	= f.error_notification
+	= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+
+	.form-inputs
+		.row
+			.col-md-6.col-12
+			= f.input :email
+			.col-md-6.col-12
+			= f.input :password
+    
+	%br
+
+	.form_action
+		= f.button :submit, value: :Login, class: "btn btn-primary", data: {disable_with: "Logging.."} #default value = "create user"

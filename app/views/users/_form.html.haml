@@ -1,0 +1,20 @@
+-# frozen_string_literal: true
+= simple_form_for(@user) do |f|
+  = f.error_notification
+  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+
+  .form-inputs
+    .row
+      .col-md-6.col-12
+        = f.input :name
+    .row
+      .col-6
+        = f.input :age
+      .col-6
+        = f.input :email
+    = f.input :password
+
+  %br
+
+  .form-actions
+    = f.button :submit, class: "btn btn-primary"
