@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   helper ApplicationHelper
 
 
-
+  before_action :is_logged_in, only: %i[feed show_post_by_name new_post]
   before_action :set_user, only: %i[ show edit update destroy ]
 
   # GET /users or /users.json
@@ -85,8 +85,12 @@ class UsersController < ApplicationController
     end 
 
     if (exist_user != false)
-      flash[:success] = "Login successfully"
-      redirect_to users_path
+      flash[:success] = "Login Successfully"
+      session[:user_id] = exist_user.id
+      @user = exist_user
+      puts "-----------------------------login as #{@user.name}"
+      puts "-----------------------------following #{@user.following}"
+      redirect_to "/feed"
     else 
       flash[:alert] = "Wrong Email or Password!!"
       render :login_page
@@ -100,6 +104,17 @@ class UsersController < ApplicationController
   def show_post_by_name
   
   end
+
+  def new_post
+
+  end
+
+  def create_post
+    puts "============msg : #{params[:post][:msg]}"
+    new_post = Post.create(msg: params[:post][:msg], user_id: session[:user_id])
+    flash[:success] = "Create post Successfully!!"
+    redirect_to :feed
+  end
   
   # === end custom define ===
 
@@ -111,7 +126,7 @@ class UsersController < ApplicationController
       if (session[:user_id] != nil)
         return true;
       else 
-        redirect_to :login_page, notice: "Please Login"
+        redirect_to :main, notice: "Please Login"
       end
     end
 

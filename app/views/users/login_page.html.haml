@@ -1,7 +1,8 @@
 - flash.each do |type,msg|
 	-#%div{class: "#{flash_class(type)}" }
-	%div{class: "alert alert-danger"}
-		=msg
+	- if ["alert", "notice", "danger"].include?(type) 
+		%div{class: "alert alert-danger"}
+			=msg
 
 =simple_form_for(User.new, as: :user, method: :post, url: :main) do |f|	#add your config here!!!!!!!
 	= f.error_notification

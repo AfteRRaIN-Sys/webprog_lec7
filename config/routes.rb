@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   get "/register", to: "users#new"
   get "/feed", to: "users#feed"
-  get "/profile/:username", to: "users#feed"
+  get "/new_post",to: "users#new_post" 
+  post "create_user_post", to:"users#create_post"
+  get "/profile/:username", to: "users#show_post_by_name"
 
 end

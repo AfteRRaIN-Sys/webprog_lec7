@@ -1,0 +1,49 @@
+-#===========navbar=============
+%nav.navbar.navbar-expand-lg.navbar-light.bg-light
+	%a.navbar-brand{href: "/main"} Logout
+	%button.navbar-toggler{"aria-controls" => "navbarSupportedContent", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#navbarSupportedContent", "data-toggle" => "collapse", type: "button"}
+		%span.navbar-toggler-icon
+	%form.form-inline.my-2.my-lg-0
+		%input.form-control.mr-sm-2{"aria-label" => "Search", placeholder: "Search", type: "search"}/
+		%button.btn.btn-outline-success.my-2.my-sm-0{type: "submit"} Search
+
+-#===========end navbar=============
+
+%h1 Welcome to feed!
+
+- flash.each do |type,msg|
+	- if ["alert", "notice", "danger", "success"].include?(type) 
+		%div{class: "alert alert-success"}
+			=msg
+
+%table{class: "table"}
+	%thead
+		%tr
+			%th Owner
+			%th Message
+			%th Posted at
+			%th Edit Post
+			%th Delete Post
+
+	%tbody
+		- c_user = User.find(session[:user_id])
+		- c_user.following.each do |f_id|
+			- user = User.find(f_id)
+			- user.posts.each do |post|
+				%tr
+					%td= user.name
+					%td= post.msg
+					%td= post.created_at
+					- if c_user.id == f_id
+						-# not sorted
+						%td= link_to 'Edit', edit_post_url(post.id)
+						%td= link_to "Destroy", post_url(post.id), method: :delete, data: {confirm: "Are you sure to delete this post?"}
+					- else
+						%td= "Not Allowed"
+						%td= "Not Allowed"
+
+%p 
+	-#=button_tag 'Submit', type: 'submit', class: "btn btn-primary" ==> use to submit form data
+	-#edit to post
+	%a{href: :new_post}
+		=button_tag "Create New Post", class: "btn btn-primary"
