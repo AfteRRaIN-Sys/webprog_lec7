@@ -6,6 +6,8 @@ class User < ApplicationRecord
 	validates :name, presence: true, uniqueness: true
 	validates :password_digest, length: {minimum: 1}
 
+	serialize :following, Array #serialize text "following" as arrays
+
 	has_secure_password
 	
 end
