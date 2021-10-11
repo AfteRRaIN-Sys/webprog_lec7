@@ -95,14 +95,27 @@ class UsersController < ApplicationController
       flash[:alert] = "Wrong Email or Password!!"
       render :login_page
     end
+
   end
 
   def feed
-
+    c_user = User.find(session[:user_id])
+    @display_posts = []
+    c_user.following.each do |f_id|
+      user = User.find(f_id)
+        user.posts.each do |post|
+          @display_posts.push(post)
+        end
+    end
+    @display_posts.sort_by!{|post| post.created_at}
   end
 
   def show_post_by_name
-  
+    @profile_user = User.find_by(name: params[:name])
+    if @profile_user == nil
+      flash[:alert] = "Profile not found, Please try again!"
+      redirect_to :feed
+    end
   end
 
   def new_post
@@ -116,6 +129,23 @@ class UsersController < ApplicationController
     redirect_to :feed
   end
   
+  def follow_by_id
+    @user = User.find(session[:user_id])
+    follow_user = User.find(params[:user_id])
+    @user.following.push(follow_user.id)
+    @user.save
+    flash[:success] = "Follow \"#{follow_user.name}\" Successfully!!"
+    redirect_to :feed
+  end
+
+  def unfollow_by_id
+    @user = User.find(session[:user_id])
+    unfollow_user = User.find(params[:user_id])
+    @user.following.delete(unfollow_user.id)
+    @user.save
+    flash[:success] = "Unfollow \"#{unfollow_user.name}\" Successfully!!"
+    redirect_to :feed
+  end
   # === end custom define ===
 
   private
@@ -124,6 +154,7 @@ class UsersController < ApplicationController
     # ==== custom define ====
     def is_logged_in
       if (session[:user_id] != nil)
+        @user = User.find(session[:user_id])
         return true;
       else 
         redirect_to :main, notice: "Please Login"

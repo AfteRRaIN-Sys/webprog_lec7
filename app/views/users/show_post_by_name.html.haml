@@ -1,0 +1,22 @@
+%h1= "Welcome to #{@profile_user.name}'s profile as #{@user.name}"
+%table{class: "table"}
+	%thread
+		%tr
+			%th Message
+			%th Post At
+	%tbody
+		- @profile_user.posts.each do |p|
+			%tr
+				%th= p.msg
+				%th= p.created_at
+
+%br
+- if @user.following.include?(@profile_user.id)
+	%a{href: "/unfollow/#{@profile_user.id}"}
+		=button_tag "Unfollow", class: "btn btn-danger"
+- else
+	%a{href: "/follow/#{@profile_user.id}"}
+		=button_tag "Follow", class: "btn btn-info"
+
+
+
