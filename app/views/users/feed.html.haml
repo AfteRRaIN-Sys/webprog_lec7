@@ -9,7 +9,7 @@
 
 -#===========end navbar=============
 
-%h1 Welcome to feed!
+%h1= "Welcome Back!! #{User.find(session[:user_id]).name}"
 
 - flash.each do |type,msg|
 	- if ["alert", "notice", "danger", "success"].include?(type) 

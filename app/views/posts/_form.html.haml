@@ -4,8 +4,10 @@
   = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
 
   .form-inputs
-    = f.association :user
+    -#= f.association :user
     = f.input :msg
+    = f.hidden_field :user_id, type: "hidden", value: session[:user_id]
 
-  .form-actions
+  .form-actions{class: "btn btn-primary"}
     = f.button :submit
+  

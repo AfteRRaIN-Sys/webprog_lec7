@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: %i[ show edit update destroy ]
+  #before_
 
   # GET /posts or /posts.json
   def index
@@ -17,6 +18,7 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
+
   end
 
   # POST /posts or /posts.json
@@ -24,7 +26,7 @@ class PostsController < ApplicationController
     @post = Post.new(post_params)
 
     respond_to do |format|
-      if @post.save
+      if (is_same_user && @post.save)
         format.html { redirect_to @post, notice: "Post was successfully created." }
         format.json { render :show, status: :created, location: @post }
       else
@@ -37,7 +39,7 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1 or /posts/1.json
   def update
     respond_to do |format|
-      if @post.update(post_params)
+      if is_same_user && @post.update(post_params)
         format.html { redirect_to @post, notice: "Post was successfully updated." }
         format.json { render :show, status: :ok, location: @post }
       else
@@ -57,6 +59,24 @@ class PostsController < ApplicationController
   end
 
   private
+
+    #====custom define====
+
+    def is_logged_in
+      if session[:user_id] != nil
+        return true
+      else
+        flash[:alert] = "Please Login!!"
+        redirect_to :main
+      end
+    end
+
+    def is_same_user
+      return (session[:user_id] != @post.user_id)? false : true
+    end
+
+    #====end custom define====
+
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])

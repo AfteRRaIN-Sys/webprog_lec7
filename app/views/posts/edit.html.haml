@@ -4,4 +4,6 @@
 
 = link_to 'Show', @post
 \|
-= link_to 'Back', posts_path
+= link_to 'Back To All Posts', posts_path
+\|
+= link_to "Back to Your Profile", user_path(session[:user_id])

@@ -11,6 +11,21 @@
   %b ID:
   = @user.id
 
+%table{class: "table"}
+  %thread
+    %tr
+      %th Message
+      %th Posted At
+      %th Edit Post
+      %th Delete Post
+  %tbody
+    - @user.posts.each do |p|
+      %tr
+        %th= p.msg
+        %th= p.created_at
+        %th= link_to "Edit", edit_post_path(p.id)
+        %th= link_to "Delete", post_path(p.id), method: :delete
+
 = link_to 'Edit', edit_user_path(@user)
 \|
 = link_to 'Back', users_path
