@@ -1,12 +1,22 @@
 -#===========navbar=============
 
 %nav.navbar.navbar-expand-lg.navbar-light.bg-light
+	%a.navbar-brand{href: "/feed"}
+		-#%img{alt: "", height: "100", src: "https://i.pinimg.com/originals/36/a8/90/36a890fe62412fda67f877e6506fde9f.png", width: "100"} μTwiiter
+		%img{alt: "", height: "100", src: "https://chula-my.sharepoint.com/personal/6230524921_student_chula_ac_th/Documents/Finished/Prog%20meth/Project/AJ_toe.png", width: "100"} μTwiiter
 	-if session[:user_id] != nil
+		#navbarNav.collapse.navbar-collapse
+			%ul.navbar-nav
+				%li.nav-item.active
+					%a.nav-link{href: "/feed"} Home
+				%li.nav-item
+					%a.nav-link{href: "/ami "} Features
+				%li.nav-item
+					%a.nav-link{href: "#"} Pricing
+				%li.nav-item
+					%a.nav-link.disabled{href: "#"} Disabled
 		%a.navbar-brand{href: "/main"} Logout
-	%button.navbar-toggler{"aria-controls" => "navbarSupportedContent", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#navbarSupportedContent", "data-toggle" => "collapse", type: "button"}
-		%span.navbar-toggler-icon
-	%form.form-inline.my-2.my-lg-0
-		%input.form-control.mr-sm-2{"aria-label" => "Search", placeholder: "Search", type: "search"}/
-		%button.btn.btn-outline-success.my-2.my-sm-0{type: "submit"} Search
+		%button.navbar-toggler{"aria-controls" => "navbarSupportedContent", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#navbarSupportedContent", "data-toggle" => "collapse", type: "button"}
+			%span.navbar-toggler-icon
 
 -#===========end navbar=============
