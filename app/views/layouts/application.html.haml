@@ -14,4 +14,16 @@
   %body
     = render "layouts/navigation"
     .container
+      %br
+      -flash.each do |type,msg|
+        -if(type == "success")
+          %div{class: "alert alert-success"}
+            =msg
+        -if(type == "notice")
+          %div{class: "alert alert-info"}
+            =msg
+        -if(type == "alert" || type == "error" || type == "danger")
+          %div{class: "alert alert-danger"}
+            =msg
       = yield
+    

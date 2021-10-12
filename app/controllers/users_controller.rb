@@ -89,7 +89,6 @@ class UsersController < ApplicationController
       session[:user_id] = exist_user.id
       @user = exist_user
       puts "-----------------------------login as #{@user.name}"
-      puts "-----------------------------following #{@user.following}"
       redirect_to "/feed"
     else 
       flash[:alert] = "Wrong Email or Password!!"
@@ -133,24 +132,26 @@ class UsersController < ApplicationController
     @user = User.find(session[:user_id])
     follow_user = User.find(params[:user_id]) rescue nil
     if (follow_user != nil )
-      @user.following.push(follow_user.id)
-      @user.save
+      #@user.following.push(follow_user.id)
+      #@user.save
 
       # ===follow table===
 
       if (Follow.find_by(follower_id: session[:user_id], followee_id: follow_user.id) == nil) 
         new_follow = Follow.create(follower_id: session[:user_id], followee_id: follow_user.id)
         puts "------------create follow #{new_follow.follower_id} --> #{new_follow.followee_id}"
+        flash[:success] = "Follow \"#{follow_user.name}\" Successfully!!"
+        redirect_to :feed
       else 
         puts "------------create follow but there is duplicate follow"
+        flash[:alert] = "You already follow this beloved user :D"
+        redirect_to :feed
       end
 
       #==================
 
-      flash[:success] = "Follow \"#{follow_user.name}\" Successfully!!"
-      redirect_to :feed
     else
-      flash[:alert] = "Follow not Successfull"
+      flash[:alert] = "There is no User in the system!!"
       redirect_to :feed
     end
 
@@ -160,23 +161,25 @@ class UsersController < ApplicationController
     @user = User.find(session[:user_id])
     unfollow_user = User.find(params[:user_id]) rescue nil
     if (unfollow_user != nil)
-      @user.following.delete(unfollow_user.id)
-      @user.save
+      #@user.following.delete(unfollow_user.id)
+      #@user.save
 
       # ===follow table===
       if (Follow.find_by(follower_id: session[:user_id], followee_id: unfollow_user.id) != nil)
         @follow = Follow.find_by(follower_id: session[:user_id], followee_id: unfollow_user.id)
         puts "------------delete follow #{@follow.follower_id} --> #{@follow.followee_id}"
         @follow.delete
+        flash[:success] = "Unfollow \"#{unfollow_user.name}\" Successfully!!"
+        redirect_to :feed
       else 
         puts "------------delete follow but there is no follow"
+        flash[:alert] = "You are not following this user :D"
+        redirect_to :feed
       end
       #===================
 
-      flash[:success] = "Unfollow \"#{unfollow_user.name}\" Successfully!!"
-      redirect_to :feed
     else
-      flash[:alert] = "Unfollow not Successfull"
+      flash[:alert] = "There is no User in the system!!"
       redirect_to :feed
     end
   end
