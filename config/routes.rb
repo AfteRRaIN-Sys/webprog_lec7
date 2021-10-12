@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get "/new_post",to: "users#new_post" 
   post "create_user_post", to:"users#create_post"
   get "/profile/:name", to: "users#show_post_by_name"
+  get "/profile", to: "users#feed"
 
   get "/follow/:user_id", to: "users#follow_by_id"
   get "/unfollow/:user_id", to: "users#unfollow_by_id"

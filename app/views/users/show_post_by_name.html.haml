@@ -11,7 +11,7 @@
 				%th= p.created_at
 
 %br
-- if @user.following.include?(@profile_user.id)
+- if Follow.find_by(follower_id: session[:user_id], followee_id: @profile_user.id) != nil
 	%a{href: "/unfollow/#{@profile_user.id}"}
 		=button_tag "Unfollow", class: "btn btn-danger"
 - else
