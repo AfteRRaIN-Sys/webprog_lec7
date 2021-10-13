@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get "/profile/:name", to: "users#show_post_by_name"
   get "/profile", to: "users#feed"
 
+  get "/search",to: "users#search_user"
   get "/follow/:user_id", to: "users#follow_by_id"
   get "/unfollow/:user_id", to: "users#unfollow_by_id"
 

@@ -183,6 +183,20 @@ class UsersController < ApplicationController
       redirect_to :feed
     end
   end
+
+  def search_user
+    if params[:name] == nil || params[:name].length == 0 
+      flash[:alert] = "You did not enter the username, Please retry!!"
+      redirect_to "/feed"
+    elsif User.find_by(name: params[:name]) == nil
+      flash[:alert] = "You enter wrong username, Please retry!!"
+      redirect_to "/feed"
+    else
+      flash[:success] = "Congrats! We found your result!!"
+      redirect_to "/profile/#{params[:name]}"
+    end
+      
+  end
   # === end custom define ===
 
   private
