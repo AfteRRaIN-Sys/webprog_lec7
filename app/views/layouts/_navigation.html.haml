@@ -29,6 +29,7 @@
 				%input#fname.form-control.me-2{name: "name", type: "text"}
 				%button.btn.btn-outline-success{type: "submit"} Search
 			.p-2
-				%a.navbar-brand{href: "/main"} Logout
+				%a{href: "/main"}
+					=button_tag "Logout", class: "btn btn-outline-danger"
 
 -#===========end navbar=============
