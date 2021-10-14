@@ -13,3 +13,5 @@
 
 	.form_action
 		= f.button :submit, value: :Login, class: "btn btn-primary", data: {disable_with: "Logging.."} #default value = "create user"
+	%a{href: "/users/new"}
+		=button_tag "Register", class: "btn btn-primary"
