@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   include ApplicationHelper 
   helper ApplicationHelper
 
-
+  #skip_before_action :verify_authenticity_token, only: %i[is_logged_in]
   before_action :is_logged_in, only: %i[feed show_post_by_name new_post follow_by_id unfollow_by_id]
   before_action :set_user, only: %i[ show edit update destroy ]
 
@@ -99,14 +99,7 @@ class UsersController < ApplicationController
 
   def feed
     c_user = User.find(session[:user_id])
-    @display_posts = []
-    c_user.followees.each do |follow|
-      user = User.find(follow.followee_id)
-        user.posts.each do |post|
-          @display_posts.push(post)
-        end
-    end
-    @display_posts.sort_by!{|post| post.created_at}
+    @display_posts = c_user.get_feed_post(session[:user_id])
   end
 
   def show_post_by_name

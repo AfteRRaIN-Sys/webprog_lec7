@@ -11,7 +11,12 @@
     
 	%br
 
-	.form_action
-		= f.button :submit, value: :Login, class: "btn btn-primary", data: {disable_with: "Logging.."} #default value = "create user"
-	%a{href: "/users/new"}
-		=button_tag "Register", class: "btn btn-primary"
+	.row
+		.col-1
+			.form_action
+				= f.button :submit, value: :Login, class: "btn btn-primary", data: {disable_with: "Logging.."} #default value = "create user"
+		.col-1
+			%a{href: "/users/new"}
+				=button_tag "Register", class: "btn btn-primary"
+				
+	-#button = button_to "Follow", follow_user_path , method: "POST"
