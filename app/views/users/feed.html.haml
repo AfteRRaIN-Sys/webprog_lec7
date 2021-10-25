@@ -8,6 +8,8 @@
 			%th Posted at
 			%th Edit Post
 			%th Delete Post
+			%th #Likes
+			%th Liked User
 
 	%tbody
 		- c_user = User.find(session[:user_id])
@@ -23,9 +25,48 @@
 				- else
 					%td= "Not Allowed"
 					%td= "Not Allowed"
+				%td= post.likes.length
+				%td
+					%button{class: "btn btn-info","data-bs-toggle" => "modal", "data-bs-target" => "#liked_user", type: "button"}
+						Liked User
+					#liked_user.modal.fade{role: "dialog"}
+						.modal-dialog.modal-dialog-scrollable
+							.modal-content
+								.modal-header
+									%h4.modal-title Users who liked this post
+									%button.btn-close{"data-bs-dismiss" => "modal", type: "button"}
+								.modal-body
+									%table{class: "table"}
+										%thread
+											%tr
+												%th= "User"
+										%tbody
+											%tr
+												%td= @l
+
+								.modal-footer
+									%button.btn.btn-danger{"data-bs-dismiss" => "modal", type: "button"} Close
+
+
 
 %p 
 	-#=button_tag 'Submit', type: 'submit', class: "btn btn-primary" ==> use to submit form data
 	-#edit to post
 	%a{href: :new_post}
 		=button_tag "Create New Post", class: "btn btn-primary"
+-#.container.mt-3
+	-#%h3 Modal Example
+	-#%p Click on the button to open the modal.
+	-#%button.btn.btn-primary{"data-bs-target" => "#myModal", "data-bs-toggle" => "modal", type: "button"}
+		-#Open modal
+
+-#myModal.modal
+	-#.modal-dialog
+		-#.modal-content
+			-#.modal-header
+				-#%h4.modal-title Modal Heading
+				-#%button.btn-close{"data-bs-dismiss" => "modal", type: "button"}
+			-#.modal-body
+				-#Modal body..
+			-#.modal-footer
+				-#%button.btn.btn-danger{"data-bs-dismiss" => "modal", type: "button"} Close
