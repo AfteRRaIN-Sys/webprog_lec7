@@ -13,6 +13,7 @@
 
 	%tbody
 		- c_user = User.find(session[:user_id])
+		- d = 0
 		- @display_posts.each do |post|
 			%tr
 				%td= User.find(post.user_id).name
@@ -27,46 +28,61 @@
 					%td= "Not Allowed"
 				%td= post.likes.length
 				%td
-					%button{class: "btn btn-info","data-bs-toggle" => "modal", "data-bs-target" => "#liked_user", type: "button"}
-						Liked User
-					#liked_user.modal.fade{role: "dialog"}
-						.modal-dialog.modal-dialog-scrollable
-							.modal-content
-								.modal-header
-									%h4.modal-title Users who liked this post
-									%button.btn-close{"data-bs-dismiss" => "modal", type: "button"}
-								.modal-body
-									%table{class: "table"}
-										%thread
-											%tr
-												%th= "User"
-										%tbody
-											%tr
-												%td= @l
+					%button{class: "btn btn-info like_btn","data-bs-toggle" => "modal", "data-bs-target": "#liked_user", type: "button", "#likes": post.likes.length, "users": @like_user_in_each_post[d], "d": d}
+						="Liked User"
+			-d=d+1
 
-								.modal-footer
-									%button.btn.btn-danger{"data-bs-dismiss" => "modal", type: "button"} Close
-
-
+.modal.fade{role: "dialog", id: "like_modal"}
+	.modal-dialog.modal-dialog-scrollable
+		.modal-content
+			.modal-header
+				%h4.modal-title Users who liked this post
+				%button.btn-close{"data-bs-dismiss" => "modal", type: "button"}
+			.modal-body
+				%table{class: "table"}
+					%thread
+						%tr
+							%th= "User"
+					%tbody#s1
+						-#%tr#line
+							-#%td#row
+			.modal-footer
+				%button.btn.btn-danger{"data-bs-dismiss" => "modal", type: "button"} Close
 
 %p 
-	-#=button_tag 'Submit', type: 'submit', class: "btn btn-primary" ==> use to submit form data
-	-#edit to post
 	%a{href: :new_post}
 		=button_tag "Create New Post", class: "btn btn-primary"
--#.container.mt-3
-	-#%h3 Modal Example
-	-#%p Click on the button to open the modal.
-	-#%button.btn.btn-primary{"data-bs-target" => "#myModal", "data-bs-toggle" => "modal", type: "button"}
-		-#Open modal
 
--#myModal.modal
-	-#.modal-dialog
-		-#.modal-content
-			-#.modal-header
-				-#%h4.modal-title Modal Heading
-				-#%button.btn-close{"data-bs-dismiss" => "modal", type: "button"}
-			-#.modal-body
-				-#Modal body..
-			-#.modal-footer
-				-#%button.btn.btn-danger{"data-bs-dismiss" => "modal", type: "button"} Close
+
+:javascript
+	//homework
+	//console.log("hello")
+	$(".like_btn").click(function(){
+
+
+		//$("#row").html($(this).attr("#likes"))
+		//$("#line").append($(this).attr("users"));
+
+		//$("#row").html($(this).attr("d"));
+		console.log($(this).attr("#likes"))
+		console.log($(this).attr("users"))
+		console.log($(this).attr("d"))
+		
+		var str = $(this).attr("users");
+		console.log(str)
+		var arr = str.split(",")
+		console.log(arr)
+
+		tbody = $("#s1")
+		tbody.empty()
+		for (let i = 0; i < arr.length; i++) {
+			if (str.length===0) { break; }
+			tbody.append("<tr><td><a class=\"d-grid gap-2 col-6 mx-auto btn btn-outline-info\" href=\"/profile/" + arr[i] + "\">" + arr[i] + "</a></td></tr>");
+		}
+
+		//display
+		var myModal = new bootstrap.Modal(document.getElementById('like_modal'), {});
+		myModal.show();
+
+
+	})				

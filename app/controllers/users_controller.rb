@@ -100,6 +100,14 @@ class UsersController < ApplicationController
   def feed
     c_user = User.find(session[:user_id])
     @display_posts = c_user.get_feed_post(session[:user_id])
+    @like_user_in_each_post = []
+    @display_posts.each do |post|
+      tmp1 = []
+      post.likes.each do |like|
+        tmp1.append(User.find(like.user_id).name)
+      end
+      @like_user_in_each_post.append(tmp1.join(","))
+    end
   end
 
   def show_post_by_name
@@ -108,6 +116,16 @@ class UsersController < ApplicationController
       flash[:alert] = "Profile not found, Please try again!"
       redirect_to :feed
     end
+
+    @like_user_in_each_post = []
+    @profile_user.posts.each do |post|
+      tmp1 = []
+      post.likes.each do |like|
+        tmp1.append(User.find(like.user_id).name)
+      end
+      @like_user_in_each_post.append(tmp1.join(","))
+    end
+
   end
 
   def new_post

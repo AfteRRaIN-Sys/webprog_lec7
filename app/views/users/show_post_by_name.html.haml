@@ -4,11 +4,19 @@
 		%tr
 			%th Message
 			%th Post At
+			%th Show Liked User
+			%th 
 	%tbody
+		- d=0
 		- @profile_user.posts.each do |p|
 			%tr
-				%th= p.msg
-				%th= p.created_at
+				%td= p.msg
+				%td= p.created_at
+				%td
+					%button{class: "btn btn-info like_btn","data-bs-toggle" => "modal", "data-bs-target": "#liked_user", type: "button", "#likes": p.likes.length, "users": @like_user_in_each_post[d], "d": d}
+						="Liked User"
+				%td xxx
+			-d=d+1;
 
 %br
 - if Follow.find_by(follower_id: session[:user_id], followee_id: @profile_user.id) != nil
@@ -18,5 +26,53 @@
 	%a{href: "/follow/#{@profile_user.id}"}
 		=button_tag "Follow", class: "btn btn-info"
 
+.modal.fade{role: "dialog", id: "like_modal"}
+	.modal-dialog.modal-dialog-scrollable
+		.modal-content
+			.modal-header
+				%h4.modal-title Users who liked this post
+				%button.btn-close{"data-bs-dismiss" => "modal", type: "button"}
+			.modal-body
+				%table{class: "table"}
+					%thread
+						%tr
+							%th= "User"
+					%tbody#s1
+						-#%tr#line
+							-#%td#row
+			.modal-footer
+				%button.btn.btn-danger{"data-bs-dismiss" => "modal", type: "button"} Close
 
 
+:javascript
+	//homework
+	//console.log("hello")
+	$(".like_btn").click(function(){
+
+
+		//$("#row").html($(this).attr("#likes"))
+		//$("#line").append($(this).attr("users"));
+
+		//$("#row").html($(this).attr("d"));
+		console.log($(this).attr("#likes"))
+		console.log($(this).attr("users"))
+		console.log($(this).attr("d"))
+		
+		var str = $(this).attr("users");
+		console.log(str)
+		var arr = str.split(",")
+		console.log(arr)
+
+		tbody = $("#s1")
+		tbody.empty()
+		for (let i = 0; i < arr.length; i++) {
+			if (str.length===0) { break; }
+			tbody.append("<tr><td><a class=\"d-grid gap-2 col-6 mx-auto btn btn-outline-info\" href=\"/profile/" + arr[i] + "\">" + arr[i] + "</a></td></tr>");
+		}
+
+		//display
+		var myModal = new bootstrap.Modal(document.getElementById('like_modal'), {});
+		myModal.show();
+
+
+	})		
