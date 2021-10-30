@@ -10,6 +10,7 @@
 			%th Delete Post
 			%th #Likes
 			%th Liked User
+			%th 
 
 	%tbody
 		- c_user = User.find(session[:user_id])
@@ -30,6 +31,13 @@
 				%td
 					%button{class: "btn btn-info like_btn","data-bs-toggle" => "modal", "data-bs-target": "#liked_user", type: "button", "#likes": post.likes.length, "users": @like_user_in_each_post[d], "d": d}
 						="Liked User"
+				%td
+					-l = Like.find_by(post_id: post.id, user_id: session[:user_id])
+					- if l != nil
+						-# not sorted
+						%td= link_to 'UnLike', "/unlike/#{l.id}", class: "btn btn-outline-dark btn-sm"
+					- else
+						%td= link_to 'Like', "/like/#{post.id}", class: "btn btn-outline-success btn-sm"
 			-d=d+1
 
 .modal.fade{role: "dialog", id: "like_modal"}
