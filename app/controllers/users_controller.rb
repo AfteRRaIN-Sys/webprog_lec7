@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   helper ApplicationHelper
 
   #skip_before_action :verify_authenticity_token, only: %i[is_logged_in]
-  before_action :is_logged_in, only: %i[feed show_post_by_name new_post follow_by_id unfollow_by_id]
+  before_action :is_logged_in, only: %i[feed show_post_by_name new_post follow_by_id unfollow_by_id like_post unlike_post]
   before_action :set_user, only: %i[ show edit update destroy ]
 
   # GET /users or /users.json
@@ -208,7 +208,44 @@ class UsersController < ApplicationController
     end
       
   end
+  def like_post
+
+    to_follow_post = Post.find(params[:new_post_id])
+    if (to_follow_post != nil )
+      if (Like.find_by(user_id: session[:user_id], post_id: params[:new_post_id]) == nil) 
+        new_like = Like.create(user_id: session[:user_id], post_id: params[:new_post_id])
+        flash[:success] = "Like Successfully, You might like these posts too!!"
+        redirect_to "/profile/#{User.find(to_follow_post.user_id).name}"
+      else 
+        flash[:alert] = "You already like this post :D"
+        redirect_to :feed
+      end
+    else
+      flash[:alert] = "There is no such Post in the system!!"
+      redirect_to :feed
+    end
+
+  end
+
+  def unlike_post
+    to_del_like = Like.find(params[:like_id]) rescue nil
+    if (to_del_like != nil)
+      if (to_del_like.user_id == session[:user_id])
+        to_del_like.delete
+        flash[:success] = "Unlike Successfully!!"
+        redirect_to :feed
+      else 
+        flash[:alert] = "You are not allowed to do this!!"
+        redirect_to :feed
+      end
+    else
+      flash[:alert] = "You have not like the post yet or the post is not exists!!"
+      redirect_to :feed
+    end
+  end
+
   # === end custom define ===
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

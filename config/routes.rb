@@ -17,4 +17,7 @@ Rails.application.routes.draw do
   get "/follow/:user_id", to: "users#follow_by_id"
   get "/unfollow/:user_id", to: "users#unfollow_by_id"
 
+  get "/like/:new_post_id", to: "users#like_post"
+  get "/unlike/:like_id", to: "users#unlike_post"
+
 end
