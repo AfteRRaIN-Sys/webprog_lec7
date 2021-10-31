@@ -1,4 +1,4 @@
-%h1= "Welcome Back!! #{User.find(session[:user_id]).name}"
+%h1{class: "fst-italic fs-1"}= "Welcome Back!! #{User.find(session[:user_id]).name}"
 
 %table{class: "table"}
 	%thead
@@ -29,7 +29,7 @@
 					%td= "Not Allowed"
 				%td= post.likes.length
 				%td
-					%button{class: "btn btn-info like_btn","data-bs-toggle" => "modal", "data-bs-target": "#liked_user", type: "button", "#likes": post.likes.length, "users": @like_user_in_each_post[d], "d": d}
+					%button{class: "btn btn-info like_btn",id:"_showlike_btn_#{d}", "data-bs-toggle": "modal", "data-bs-target": "#liked_user", type: "button", "#likes": post.likes.length, "users": @like_user_in_each_post[d], "d": d}
 						="Liked User"
 				%td
 					-l = Like.find_by(post_id: post.id, user_id: session[:user_id])
@@ -40,22 +40,7 @@
 						%td= link_to 'Like', "/like/#{post.id}", class: "btn btn-outline-success btn-sm"
 			-d=d+1
 
-.modal.fade{role: "dialog", id: "like_modal"}
-	.modal-dialog.modal-dialog-scrollable
-		.modal-content
-			.modal-header
-				%h4.modal-title Users who liked this post
-				%button.btn-close{"data-bs-dismiss" => "modal", type: "button"}
-			.modal-body
-				%table{class: "table"}
-					%thread
-						%tr
-							%th= "User"
-					%tbody#s1
-						-#%tr#line
-							-#%td#row
-			.modal-footer
-				%button.btn.btn-danger{"data-bs-dismiss" => "modal", type: "button"} Close
+= render "layouts/show_likes_modal"
 
 %p 
 	%a{href: :new_post}
@@ -63,29 +48,20 @@
 
 
 :javascript
-	//homework
-	//console.log("hello")
 	$(".like_btn").click(function(){
 
-
-		//$("#row").html($(this).attr("#likes"))
-		//$("#line").append($(this).attr("users"));
-
-		//$("#row").html($(this).attr("d"));
 		console.log($(this).attr("#likes"))
 		console.log($(this).attr("users"))
 		console.log($(this).attr("d"))
 		
 		var str = $(this).attr("users");
-		console.log(str)
 		var arr = str.split(",")
-		console.log(arr)
 
 		tbody = $("#s1")
 		tbody.empty()
 		for (let i = 0; i < arr.length; i++) {
 			if (str.length===0) { break; }
-			tbody.append("<tr><td><a class=\"d-grid gap-2 col-6 mx-auto btn btn-outline-info\" href=\"/profile/" + arr[i] + "\">" + arr[i] + "</a></td></tr>");
+			tbody.append("<tr><td>"+arr[i]+"</td>\n"+"<td><a class=\"d-grid gap-2 mx-auto btn btn-outline-info btn-sm\" href=\"/profile/" + arr[i] + "\">" + "Visit Profile" + "</a></td></tr>");
 		}
 
 		//display

@@ -1,4 +1,4 @@
-%h1= "Welcome to #{@profile_user.name}'s profile as #{@user.name}"
+%h1{class: "fst-italic fs-1"}= "Welcome to #{@profile_user.name}'s profile as #{@user.name}"
 %table{class: "table"}
 	%thread
 		%tr
@@ -32,23 +32,7 @@
 	%a{href: "/follow/#{@profile_user.id}"}
 		=button_tag "Follow", class: "btn btn-info"
 
-.modal.fade{role: "dialog", id: "like_modal"}
-	.modal-dialog.modal-dialog-scrollable
-		.modal-content
-			.modal-header
-				%h4.modal-title Users who liked this post
-				%button.btn-close{"data-bs-dismiss" => "modal", type: "button"}
-			.modal-body
-				%table{class: "table"}
-					%thread
-						%tr
-							%th= "User"
-					%tbody#s1
-						-#%tr#line
-							-#%td#row
-			.modal-footer
-				%button.btn.btn-danger{"data-bs-dismiss" => "modal", type: "button"} Close
-
+= render "layouts/show_likes_modal"
 
 :javascript
 	//homework
