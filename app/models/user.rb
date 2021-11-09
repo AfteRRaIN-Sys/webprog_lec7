@@ -36,6 +36,7 @@ class User < ApplicationRecord
 	    end
 	    display_posts.sort_by!{|post| post.created_at}
 	    return display_posts
+
 	end
 	#===== end custom define =====
 	

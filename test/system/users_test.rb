@@ -54,18 +54,21 @@ class UsersTest < ApplicationSystemTestCase
 =end
 
   test "login_success" do
+    #register user1
     visit "http://localhost:3000/users/new"
     fill_in "Email", with: "email2"
     fill_in "Name", with: "name2"
     fill_in "Age", with: 10
     fill_in "Password", with: "12345"
     click_on "Create User"
+    #register user2
     visit "http://localhost:3000/users/new"
     fill_in "Email", with: "adminemail"
     fill_in "Name", with: "admin"
     fill_in "Age", with: 10
     fill_in "Password", with: "12345"
     click_on "Create User"
+    
     visit "http://localhost:3000/main"
     fill_in "Email", with: "adminemail"
     fill_in "Password", with: "12345"
@@ -75,6 +78,7 @@ class UsersTest < ApplicationSystemTestCase
 
 
   test "login_fail" do
+    #register user1
     visit "http://localhost:3000/users/new"
     fill_in "Email", with: "email2"
     fill_in "Name", with: "name2"
@@ -82,11 +86,13 @@ class UsersTest < ApplicationSystemTestCase
     fill_in "Password", with: "12345"
     click_on "Create User"
     visit "http://localhost:3000/users/new"
+    #register user2
     fill_in "Email", with: "adminemail"
     fill_in "Name", with: "admin"
     fill_in "Age", with: 10
     fill_in "Password", with: "12345"
     click_on "Create User"
+
     visit "http://localhost:3000/main"
     fill_in "Email", with: "adminemail"
     fill_in "Password", with: "zzzzaaasdda"
@@ -95,6 +101,7 @@ class UsersTest < ApplicationSystemTestCase
   end
 
   test "like" do
+    #register
     visit "http://localhost:3000/users/new"
     fill_in "Email", with: "email2"
     fill_in "Name", with: "name2"
@@ -108,21 +115,23 @@ class UsersTest < ApplicationSystemTestCase
     fill_in "Password", with: "12345"
     click_on "Create User"
 
+    #login
     visit "http://localhost:3000/main"
     fill_in "Email", with: "admin"
     fill_in "Password", with: "12345"
     click_on "Login"
 
+    #create new post
     click_on "Create New Post", match: :first
     fill_in "Msg", with: "testmsg"
     click_on "Create Post", match: :first
 
-    #visit "http://localhost:3000/profile/admin"
-    #click_on "Follow", match: :first
 
+    #back to feed
     visit "http://localhost:3000/feed"
     click_on "Like", match: :first
 
+    #click on modal
     visit "http://localhost:3000/profile/phetlnw"
     click_on "Liked User", match: :first
     assert_text "phetlnw"
